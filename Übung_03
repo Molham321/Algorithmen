@@ -1,0 +1,78 @@
+#include <iostream>
+
+float function(float _x)	// f(x) = x²
+{
+	float res = pow(_x, 2);
+	return res;
+}
+
+float RectangularMethodUndersum()
+{
+
+	int _a;
+	int _b; 
+	float _intervals;
+
+	std::cout << "Enter a ,b and Intervals: ";
+
+	std::cin >> _a;			// 0
+	std::cin >> _b;			// 2
+	std::cin >> _intervals;	// 0.5	=> 4		(2 - 0) / 0.5 = 4
+
+	float undersum = 0;
+
+	for (int i = 0; i < (_b -_a)/ _intervals; i++)	// 0 1 2 3
+	{
+		undersum += _intervals * function(i * _intervals);
+	}
+
+	std::cout << "undersum: " << undersum << std::endl;
+
+	return undersum;
+}
+
+float RectangularMethodOversum()
+{
+
+	int _a;
+	int _b;
+	float _intervals;
+
+	std::cout << "Enter a ,b and Intervals: ";
+
+	std::cin >> _a;			// 0
+	std::cin >> _b;			// 2
+	std::cin >> _intervals;	// 0.5
+
+	float oversum = 0;
+
+	for (int i = 0; i < (_b - _a) / _intervals; i++)
+	{
+		oversum += _intervals * function(i * _intervals + _intervals);
+	}
+
+	std::cout << "undersum: " << oversum << std::endl;
+
+	return oversum;
+}
+
+float TrapezoidalMethod()
+{
+	float res = (RectangularMethodUndersum() + RectangularMethodOversum()) / 2;
+	return res;
+}
+
+//ToDo
+//float SimpsonMethod()
+//{
+//
+//}
+
+int main()
+{
+	//std::cout << RectangularMethodUndersum();
+	//std::cout << RectangularMethodOversum();
+	//std::cout << TrapezoidalMethod();
+
+	return 0;
+}
