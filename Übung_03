@@ -1,78 +1,100 @@
 #include <iostream>
 
-float function(float _x)	// f(x) = x²
+using namespace std;
+
+double function(double  _x)	// f(x) = x²
 {
-	float res = pow(_x, 2);
-	return res;
+	return pow(_x, 2);
 }
 
-float RectangularMethodUndersum()
+double getIntegralRectangle()
 {
 
-	int _a;
-	int _b; 
-	float _intervals;
+	int a;
+	int b; 
+	int intervals;
 
-	std::cout << "Enter a ,b and Intervals: ";
+	cout << "Enter a ,b and Intervals: ";
 
-	std::cin >> _a;			// 0
-	std::cin >> _b;			// 2
-	std::cin >> _intervals;	// 0.5	=> 4		(2 - 0) / 0.5 = 4
+	cin >> a;			// 0
+	cin >> b;			// 2
+	cin >> intervals;	// 4
 
-	float undersum = 0;
+	double deltaX = (double)(b - a) / intervals;		//0.5
 
-	for (int i = 0; i < (_b -_a)/ _intervals; i++)	// 0 1 2 3
+	double undersum = 0;
+	double oversum = 0;
+
+	for (double i = a; i < b; i += deltaX)	// i = 0	i= 0.5		i=1		i=1.5
 	{
-		undersum += _intervals * function(i * _intervals);
+		undersum += function(i);
+		oversum += function(i + deltaX);
 	}
 
-	std::cout << "undersum: " << undersum << std::endl;
+	undersum *= deltaX;
+	oversum *= deltaX;
 
-	return undersum;
+	return (undersum + oversum) / 2;
 }
 
-float RectangularMethodOversum()
+double getIntegralTrapez()
 {
+	int a;
+	int b;
+	int intervals;
 
-	int _a;
-	int _b;
-	float _intervals;
+	cout << "Enter a ,b and Intervals: ";
 
-	std::cout << "Enter a ,b and Intervals: ";
+	cin >> a;			// 0
+	cin >> b;			// 2
+	cin >> intervals;	// 4
 
-	std::cin >> _a;			// 0
-	std::cin >> _b;			// 2
-	std::cin >> _intervals;	// 0.5
+	double deltaX = (double)(b - a) / intervals;		//0.5
 
-	float oversum = 0;
+	double innerSum = 0;
 
-	for (int i = 0; i < (_b - _a) / _intervals; i++)
+	for (double i = a; i < b; i += deltaX)
 	{
-		oversum += _intervals * function(i * _intervals + _intervals);
+		innerSum += function(i) + function(i + deltaX);
 	}
 
-	std::cout << "undersum: " << oversum << std::endl;
-
-	return oversum;
+	return innerSum * deltaX / 2;
 }
 
-float TrapezoidalMethod()
+double getIntegralSimpson()
 {
-	float res = (RectangularMethodUndersum() + RectangularMethodOversum()) / 2;
-	return res;
+	int a;
+	int b;
+	int intervals;
+
+	cout << "Enter a ,b and Intervals: ";
+
+	cin >> a;			// 0
+	cin >> b;			// 2
+	cin >> intervals;	// 4
+
+	double deltaX = (double)(b - a) / intervals;		//0.5
+
+	double innerSum = 0;
+	int index = 0;
+
+	for (double i = a; i <= b; i += deltaX)		// 0 ->	0.5 -> 1 -> 1.5
+	{
+		if (index == 0 || index == intervals) innerSum += function(i);
+		else innerSum += (index % 2 == 1 ? 4 : 2) * function(i);
+
+		index++;
+	}
+
+	return (deltaX / 3) * innerSum;
 }
 
-//ToDo
-//float SimpsonMethod()
-//{
-//
-//}
 
 int main()
 {
-	//std::cout << RectangularMethodUndersum();
-	//std::cout << RectangularMethodOversum();
-	//std::cout << TrapezoidalMethod();
+	//cout << getIntegralRectangle();
+	//cout << getIntegralTrapez();
+	cout << getIntegralSimpson();
 
 	return 0;
 }
