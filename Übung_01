@@ -1,3 +1,6 @@
+#include <iostream>
+#include <list>
+
 *
 Aufgabe 1
 Schreiben Sie ein Programm, welches die n-te Wurzel der Zahl a nach dem Heronverfahren berechnet. Die Parameter n und a sollen dabei vom Nutzer eingegeben werden
