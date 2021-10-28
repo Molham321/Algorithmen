@@ -35,3 +35,77 @@ void nteSqrt()
 
 	std::cout << result << std::endl;
 }
+
+/*
+Aufgabe 2
+Schreiben Sie ein Programm, welches alle Primzahlen zwischen 1 und n findet. Der
+Parameter n soll dabei vom Nutzer eingegeben werden können. Implementieren Sie mindestens Variante 2 der Vorlesung.
+*/
+
+void primenumbers()
+{
+	int n = 0;
+	std::list<int> my_list = {};
+
+	std::cout << "Enter a number: ";
+	std::cin >> n;
+
+	for (int i = 2; i < n; i++)
+	{
+		my_list.push_front(i);
+	}
+
+	for (int i = 2; i * i < n; i++)
+	{
+		for (int k = i; k * i < n; k++)
+		{
+			my_list.remove(i * k);
+		}
+	}
+
+	for (int x : my_list)
+	{
+		std::cout << x << std::endl;
+	}
+}
+
+void primenumbersArr()
+{
+	int n = 0;
+	int* my_list = new int[n];
+
+	std::cout << "Enter a number: ";
+	std::cin >> n;
+
+	for (int i = 2; i < n; i++)
+	{
+		my_list[i] = i;
+	}
+
+	for (int i = 2; i * i < n; i++)
+	{
+		for (int k = i; k * i < n; k++)
+		{
+			if (i*k < n)
+			{
+				my_list[i * k] = -1;
+			}
+		}
+	}
+
+	for (int i = 2; i < n; i++)
+	{
+		if (my_list[i] != -1)
+		{
+			std::cout << my_list[i] << std::endl;
+		}
+	}
+}
+
+int main()
+{
+	primenumbers();
+	nteSqrt();
+
+	return 0;
+}
