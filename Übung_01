@@ -1,0 +1,34 @@
+*
+Aufgabe 1
+Schreiben Sie ein Programm, welches die n-te Wurzel der Zahl a nach dem Heronverfahren berechnet. Die Parameter n und a sollen dabei vom Nutzer eingegeben werden
+können
+*/
+
+
+void nteSqrt()
+{
+	int n = 2;
+	int a = 16;
+	float xi = 1;
+
+	float result = 0;
+
+	std::cout << "Enter a number: ";
+	std::cin >> a;
+
+	std::cout << "Enter a Sqrt: ";
+	std::cin >> n;
+
+	do
+	{
+		if (result != 0)
+		{
+			xi = result;
+		}
+
+		result = ((n - 1) * pow(xi, n) + a) / (n * pow(xi, n - 1));
+
+	} while (result != xi);
+
+	std::cout << result << std::endl;
+}
