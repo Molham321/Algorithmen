@@ -1,0 +1,144 @@
+/*
+Aufgabe 1
+Schreiben Sie ein Programm, welches die Lösung einer Differentialgleichung erster Ordnung approximiert. 
+Implementieren Sie dabei das Euler-Cauchy-Verfahren, Runge-KuttaVerfahren 2. Ordnung und Runge-Kutta-Verfahren 4. Ordnung. Experimentieren Sie mit
+unterschiedlichen Schrittweiten, vergleichen Sie die Ergebnisse der einzelnen Verfahren.
+*/
+
+#include <iostream>
+
+double function(float _x, float _y)
+{
+	return (2 * _y * _x);					//y'(x) = 2y * x
+}
+
+void Euler_Cauchy( float _deltaX)
+{
+	std::cout << "Euler_Cauchy: " << std::endl << std::endl;
+
+	float x = 0;
+	float y = 0;
+
+	float xOld = 0;						// x0 = 0
+	float yOld = 1;						// y0 = 1
+
+	for ( x; x < 4;)
+	{
+		y = function(xOld, yOld) * _deltaX + yOld;
+		x = xOld + _deltaX;
+		std::cout << "y(" << x << ") = " << y << std::endl << std::endl;
+
+		yOld = y;
+		xOld = x;
+	}
+}
+
+void Verbessertes_Euler_Cauchy(float _deltaX)
+{
+	std::cout << "Verbessertes Euler_Cauchy: " << std::endl << std::endl;
+
+	float x = 0;
+	float y = 0;
+
+	float xOld = 0;						// x0 = 0
+	float yOld = 1;						// y0 = 1
+
+	for (x; x < 4;)
+	{
+		y = function(xOld + (_deltaX/2), yOld + (_deltaX/2) * function(yOld, xOld)) * _deltaX + yOld;
+		x = xOld + _deltaX;
+		std::cout << "y(" << x << ") = " << y << std::endl << std::endl;
+
+		yOld = y;
+		xOld = x;
+	}
+}
+
+void Runge_Kutta_2_Ordnung()
+{
+	std::cout << "Runge_Kutta_2_Ordnung: " << std::endl << std::endl;
+
+	float x = 0;
+	float y = 0;
+
+	float xOld = 0;						// x0 = 0
+	float yOld = 1;						// y0 = 1
+	float s = 1;
+	float deltaY = -1;
+
+	float k1 = 0;		
+	float k2 = 0;
+
+	for (x; x < 4;)
+	{
+		k1 = function(xOld, yOld);
+		k2 = function(xOld + s, yOld + s * k1);
+
+		deltaY = (s / 2) * (k1 + k2);
+
+		std::cout << "deltaY = " << deltaY << std::endl;
+
+		x = xOld + s;
+		y = yOld + deltaY;
+
+		std::cout << "y(" << x << ") = " << y << std::endl << std::endl;
+
+		yOld = y;
+		xOld = x;
+	}
+}
+
+void Runge_Kutta_4_Ordnung()
+{
+	std::cout << "Runge_Kutta_4_Ordnung: " << std::endl << std::endl;
+
+	float x = 0;
+	float y = 0;
+
+	float xOld = 0;						// x0 = 0
+	float yOld = 1;						// y0 = 1
+	float s = 1;
+	float deltaY = -1;
+
+	float k1 = 0;
+	float k2 = 0;
+	float k3 = 0;
+	float k4 = 0;
+
+	for (x; x < 4;)
+	{
+		k1 = function(xOld, yOld);
+		k2 = function(xOld + (s / 2), yOld + s * (k1 / 2));
+		k3 = function(xOld + (s / 2), yOld + s * (k2 / 2));
+		k4 = function(xOld + s, yOld + s * k3);
+
+		deltaY = (s / 6) * (k1 + (2 * k2) + (2 * k3) + k4);
+
+		std::cout << "deltaY = " << deltaY << std::endl;
+
+		x = xOld + s;
+		y = yOld + deltaY;
+
+		std::cout << "y(" << x << ") = " << y << std::endl << std::endl;
+
+		yOld = y;
+		xOld = x;
+	}
+}
+
+#include <iostream>
+
+int main()
+{
+	Euler_Cauchy(1);
+	Euler_Cauchy(0.5);
+
+	Verbessertes_Euler_Cauchy(1);
+	Verbessertes_Euler_Cauchy(0.5);
+
+	Runge_Kutta_2_Ordnung();
+	Runge_Kutta_4_Ordnung();
+
+
+	return 0;
+}
