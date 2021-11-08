@@ -6,124 +6,148 @@ unterschiedlichen Schrittweiten, vergleichen Sie die Ergebnisse der einzelnen Ve
 */
 
 #include <iostream>
-
+/*
+	funktion:	y'(x) = 2y * x
+*/
 double function(float _x, float _y)
 {
-	return (2 * _y * _x);					//y'(x) = 2y * x
+	return 2 * _y * _x;
 }
 
+/*
+	// berechnung vom Differentialgleichungen nach Euler_Cauchy Verfahren
+*/
 void Euler_Cauchy( float _deltaX)
 {
-	std::cout << "Euler_Cauchy: " << std::endl << std::endl;
+	std::cout << "Euler_Cauchy mit delta = : " << _deltaX  << std::endl;
+	std::cout << "---------------------------------------------------" << std::endl << std::endl;
 
 	float x = 0;
 	float y = 0;
 
-	float xOld = 0;						// x0 = 0
-	float yOld = 1;						// y0 = 1
+	float xZero = 0;						// x0 = 0
+	float yZero = 1;						// y0 = 1
 
-	for ( x; x < 4;)
+	float round = 4 / _deltaX;
+
+	for ( int i = 0; i < round; i++)
 	{
-		y = function(xOld, yOld) * _deltaX + yOld;
-		x = xOld + _deltaX;
+		y = function(xZero, yZero) * _deltaX + yZero;
+		x = xZero + _deltaX;
+
 		std::cout << "y(" << x << ") = " << y << std::endl << std::endl;
 
-		yOld = y;
-		xOld = x;
+		yZero = y;
+		xZero = x;
 	}
+	std::cout << "---------------------------------------------------" << std::endl << std::endl;
+
 }
 
 void Verbessertes_Euler_Cauchy(float _deltaX)
 {
-	std::cout << "Verbessertes Euler_Cauchy: " << std::endl << std::endl;
+	std::cout << "Verbessertes Euler_Cauchy mit delta = : " << _deltaX << std::endl << std::endl;
+	std::cout << "---------------------------------------------------" << std::endl << std::endl;
 
 	float x = 0;
 	float y = 0;
 
-	float xOld = 0;						// x0 = 0
-	float yOld = 1;						// y0 = 1
+	float xZero = 0;						// x0 = 0
+	float yZero = 1;						// y0 = 1
 
-	for (x; x < 4;)
+	float round = 4 / _deltaX;
+
+	for (int i = 0; i < round; i++)
 	{
-		y = function(xOld + (_deltaX/2), yOld + (_deltaX/2) * function(yOld, xOld)) * _deltaX + yOld;
-		x = xOld + _deltaX;
+		y = function(xZero + (_deltaX/2), yZero + (_deltaX/2) * function(yZero, xZero)) * _deltaX + yZero;
+		x = xZero + _deltaX;
+
 		std::cout << "y(" << x << ") = " << y << std::endl << std::endl;
 
-		yOld = y;
-		xOld = x;
+		yZero = y;
+		xZero = x;
 	}
+	std::cout << "---------------------------------------------------" << std::endl << std::endl;
 }
 
 void Runge_Kutta_2_Ordnung()
 {
 	std::cout << "Runge_Kutta_2_Ordnung: " << std::endl << std::endl;
+	std::cout << "---------------------------------------------------" << std::endl << std::endl;
 
 	float x = 0;
 	float y = 0;
 
-	float xOld = 0;						// x0 = 0
-	float yOld = 1;						// y0 = 1
+	float xZero = 0;						// x0 = 0
+	float yZero = 1;						// y0 = 1
 	float s = 1;
-	float deltaY = -1;
+	float deltaY = 0;
 
 	float k1 = 0;		
 	float k2 = 0;
 
-	for (x; x < 4;)
+	float round = 4 / s;
+
+	for (int i = 0; i < round; i++)
 	{
-		k1 = function(xOld, yOld);
-		k2 = function(xOld + s, yOld + s * k1);
+		k1 = function(xZero, yZero);
+		k2 = function(xZero + s, yZero + s * k1);
 
 		deltaY = (s / 2) * (k1 + k2);
 
 		std::cout << "deltaY = " << deltaY << std::endl;
 
-		x = xOld + s;
-		y = yOld + deltaY;
+		x = xZero + s;
+		y = yZero + deltaY;
 
 		std::cout << "y(" << x << ") = " << y << std::endl << std::endl;
 
-		yOld = y;
-		xOld = x;
+		yZero = y;
+		xZero = x;
 	}
+	std::cout << "---------------------------------------------------" << std::endl << std::endl;
 }
 
 void Runge_Kutta_4_Ordnung()
 {
 	std::cout << "Runge_Kutta_4_Ordnung: " << std::endl << std::endl;
+	std::cout << "---------------------------------------------------" << std::endl << std::endl;
 
 	float x = 0;
 	float y = 0;
 
-	float xOld = 0;						// x0 = 0
-	float yOld = 1;						// y0 = 1
-	float s = 1;
-	float deltaY = -1;
+	float xZero = 0;						// x0 = 0
+	float yZero = 1;						// y0 = 1
+	float s = 0.1;
+	float deltaY = 0;
 
 	float k1 = 0;
 	float k2 = 0;
 	float k3 = 0;
 	float k4 = 0;
 
-	for (x; x < 4;)
+	float round = 4 / s;
+
+	for (int i = 0; i < round; i++)
 	{
-		k1 = function(xOld, yOld);
-		k2 = function(xOld + (s / 2), yOld + s * (k1 / 2));
-		k3 = function(xOld + (s / 2), yOld + s * (k2 / 2));
-		k4 = function(xOld + s, yOld + s * k3);
+		k1 = function(xZero, yZero);
+		k2 = function(xZero + (s / 2), yZero + s * (k1 / 2));
+		k3 = function(xZero + (s / 2), yZero + s * (k2 / 2));
+		k4 = function(xZero + s, yZero + s * k3);
 
 		deltaY = (s / 6) * (k1 + (2 * k2) + (2 * k3) + k4);
 
 		std::cout << "deltaY = " << deltaY << std::endl;
 
-		x = xOld + s;
-		y = yOld + deltaY;
+		x = xZero + s;
+		y = yZero + deltaY;
 
 		std::cout << "y(" << x << ") = " << y << std::endl << std::endl;
 
-		yOld = y;
-		xOld = x;
+		yZero = y;
+		xZero = x;
 	}
+	std::cout << "---------------------------------------------------" << std::endl << std::endl;
 }
 
 #include <iostream>
