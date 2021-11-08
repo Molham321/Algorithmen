@@ -1,6 +1,6 @@
 /*
 Aufgabe 1
-Schreiben Sie ein Programm, welches die Lösung einer Differentialgleichung erster Ordnung approximiert. 
+Schreiben Sie ein Programm, welches die Lösung einer Differentialgleichung erster Ordnung approximiert.
 Implementieren Sie dabei das Euler-Cauchy-Verfahren, Runge-KuttaVerfahren 2. Ordnung und Runge-Kutta-Verfahren 4. Ordnung. Experimentieren Sie mit
 unterschiedlichen Schrittweiten, vergleichen Sie die Ergebnisse der einzelnen Verfahren.
 */
@@ -17,9 +17,9 @@ double function(float _x, float _y)
 /*
 	// berechnung vom Differentialgleichungen nach Euler_Cauchy Verfahren
 */
-void Euler_Cauchy( float _deltaX)
+void Euler_Cauchy(float _deltaX)
 {
-	std::cout << "Euler_Cauchy mit delta = : " << _deltaX  << std::endl;
+	std::cout << "Euler_Cauchy mit delta = : " << _deltaX << std::endl;
 	std::cout << "---------------------------------------------------" << std::endl << std::endl;
 
 	float x = 0;
@@ -30,7 +30,7 @@ void Euler_Cauchy( float _deltaX)
 
 	float round = 4 / _deltaX;
 
-	for ( int i = 0; i < round; i++)
+	for (int i = 0; i < round; i++)
 	{
 		y = function(xZero, yZero) * _deltaX + yZero;
 		x = xZero + _deltaX;
@@ -59,7 +59,7 @@ void Verbessertes_Euler_Cauchy(float _deltaX)
 
 	for (int i = 0; i < round; i++)
 	{
-		y = function(xZero + (_deltaX/2), yZero + (_deltaX/2) * function(yZero, xZero)) * _deltaX + yZero;
+		y = function(xZero + (_deltaX / 2), yZero + (_deltaX / 2) * function(yZero, xZero)) * _deltaX + yZero;
 		x = xZero + _deltaX;
 
 		std::cout << "y(" << x << ") = " << y << std::endl << std::endl;
@@ -70,7 +70,7 @@ void Verbessertes_Euler_Cauchy(float _deltaX)
 	std::cout << "---------------------------------------------------" << std::endl << std::endl;
 }
 
-void Runge_Kutta_2_Ordnung()
+void Runge_Kutta_2_Ordnung(float s)
 {
 	std::cout << "Runge_Kutta_2_Ordnung: " << std::endl << std::endl;
 	std::cout << "---------------------------------------------------" << std::endl << std::endl;
@@ -80,10 +80,9 @@ void Runge_Kutta_2_Ordnung()
 
 	float xZero = 0;						// x0 = 0
 	float yZero = 1;						// y0 = 1
-	float s = 1;
 	float deltaY = 0;
 
-	float k1 = 0;		
+	float k1 = 0;
 	float k2 = 0;
 
 	float round = 4 / s;
@@ -108,7 +107,7 @@ void Runge_Kutta_2_Ordnung()
 	std::cout << "---------------------------------------------------" << std::endl << std::endl;
 }
 
-void Runge_Kutta_4_Ordnung()
+void Runge_Kutta_4_Ordnung(float s)
 {
 	std::cout << "Runge_Kutta_4_Ordnung: " << std::endl << std::endl;
 	std::cout << "---------------------------------------------------" << std::endl << std::endl;
@@ -118,7 +117,6 @@ void Runge_Kutta_4_Ordnung()
 
 	float xZero = 0;						// x0 = 0
 	float yZero = 1;						// y0 = 1
-	float s = 0.1;
 	float deltaY = 0;
 
 	float k1 = 0;
@@ -160,8 +158,8 @@ int main()
 	Verbessertes_Euler_Cauchy(1);
 	Verbessertes_Euler_Cauchy(0.5);
 
-	Runge_Kutta_2_Ordnung();
-	Runge_Kutta_4_Ordnung();
+	Runge_Kutta_2_Ordnung(0.1);
+	Runge_Kutta_4_Ordnung(0.1);
 
 
 	return 0;
