@@ -1,0 +1,136 @@
+/*
+	Aufgabe 1
+		Schreiben Sie ein Programm, welches Lineare Gleichungssysteme beliebiger Größe löst.
+		Die Koeffizientenmatrix soll dabei quadratisch sein. Benutzen Sie das Verfahren der LRZerlegung.
+*/
+
+#include <iostream>
+
+using namespace std;
+
+void LGS()
+{
+	const int size = 4;
+
+	double A[size][size] = {
+		 {-1, 1,-1, 1},
+		 { 1, 0,-1, 1},
+		 { 2, 2, 1,-1},
+		 {-2,-1, 1, 1} 
+	 };
+
+	double b[size] = { 
+		1,2,3,4 
+	};
+
+	double L[size][size] = { 0 };
+
+	double x[size] = { 0 };
+	double y[size] = { 0 };
+
+	/* Displaying Solution R Matrix */
+	cout << "R Decomposition is as follows..." << endl;
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
+			cout << A[i][j] << " ";
+		}
+		cout << endl;
+	}
+
+	for (int row = 0; row < size; row++)
+	{
+		for (int col = 0; col < size; col++)
+		{
+			if (row == col)
+			{
+				L[row][col] = 1;
+			}
+			else
+				L[row][col] = 0;
+		}
+	}
+
+	int round	= 0;
+	int row		= 0;
+	int col		= 0;
+
+	for (round = 0; round < size; round++)
+	{
+		for (row = round + 1; row < size; row++)
+		{
+			L[row][round] = A[row][round] / A[round][round];
+			for (col = 0; col < size; col++)
+			{
+				A[row][col] = A[row][col] - L[row][round] * A[round][col];
+			}
+		}
+	}
+
+	/* Displaying Solution L Matrix */
+	cout << "L Decomposition is as follows..." << endl;
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
+			cout << L[i][j] << " ";
+		}
+		cout << endl;
+	}
+
+	cout << endl;
+
+
+	/* Displaying Solution R Matrix */
+	cout << "R Decomposition is as follows..." << endl;
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
+			cout << A[i][j] << " ";
+		}
+		cout << endl;
+	}
+
+	/* Vorwärtssubstitution */
+	for (int i = 0; i < size; i++)
+	{
+		double rowOutsideValue1 = 1 / L[i][i];
+		double rowSum1 = 0;
+
+		for (int j = 0; j < i; j++)
+		{
+			rowSum1 += L[i][j] * y[i];
+		}
+
+		y[i] = rowOutsideValue1 * (b[i] - rowSum1);
+	}
+
+	/* Displaying Vorwärtssubstitution */
+	cout << endl;
+	for (int i = 0; i < size; i++)
+	{
+		cout << "y" << i + 1 << " = " << y[i] << endl;
+	}
+
+	/* Rückwärtssubstitution */
+	for (int i = size - 1; i >= 0; i--) {
+		double rowOutsideValue2 = 1 / A[i][i];
+		double rowSum2 = 0;
+
+		for (int j = i; j < size; j++) {
+			rowSum2 += A[i][j] * x[j];
+		}
+		x[i] = rowOutsideValue2 * (y[i] -  rowSum2);
+	}
+
+	/* Displaying Rückwärtssubstitution */
+	cout << endl;
+	for (int i = 0; i < size; i++)
+	{
+		cout << "x" << i + 1 << " = " << x[i] << endl;
+	}
+}
+
+int main()
+{
+	LGS();
+
+	system("pause");
+	return 0;
+}
