@@ -16,11 +16,11 @@ void LGS()
 		 {-1, 1,-1, 1},
 		 { 1, 0,-1, 1},
 		 { 2, 2, 1,-1},
-		 {-2,-1, 1, 1} 
-	 };
+		 {-2,-1, 1, 1}
+	};
 
-	double b[size] = { 
-		1,2,3,4 
+	double b[size] = {
+		1,2,3,4
 	};
 
 	double L[size][size] = { 0 };
@@ -50,9 +50,9 @@ void LGS()
 		}
 	}
 
-	int round	= 0;
-	int row		= 0;
-	int col		= 0;
+	int round = 0;
+	int row = 0;
+	int col = 0;
 
 	for (round = 0; round < size; round++)
 	{
@@ -95,7 +95,7 @@ void LGS()
 
 		for (int j = 0; j < i; j++)
 		{
-			rowSum1 += L[i][j] * y[i];
+			rowSum1 += L[i][j] * y[j];
 		}
 
 		y[i] = rowOutsideValue1 * (b[i] - rowSum1);
@@ -116,7 +116,7 @@ void LGS()
 		for (int j = i; j < size; j++) {
 			rowSum2 += A[i][j] * x[j];
 		}
-		x[i] = rowOutsideValue2 * (y[i] -  rowSum2);
+		x[i] = rowOutsideValue2 * (y[i] - rowSum2);
 	}
 
 	/* Displaying Rückwärtssubstitution */
