@@ -1,4 +1,3 @@
-
 /*
 	Aufgabe 1
 		Schreiben Sie ein Programm, welches lineare Gleichungssysteme nach dem Jacobi-Verfahren
@@ -10,6 +9,125 @@
 #include <iostream>
 
 using namespace std;
+
+void LGS()
+{
+	const int size = 4;
+
+	double A[size][size] = {
+		 {-1, 1,-1, 1},
+		 { 1, 0,-1, 1},
+		 { 2, 2, 1,-1},
+		 {-2,-1, 1, 1}
+	};
+
+	double b[size] = {
+		1,2,3,4
+	};
+
+	double L[size][size] = { 0 };
+
+	double x[size] = { 0 };
+	double y[size] = { 0 };
+
+	/* Displaying Solution R Matrix */
+	cout << "R Decomposition is as follows..." << endl;
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
+			cout << A[i][j] << " ";
+		}
+		cout << endl;
+	}
+
+	for (int row = 0; row < size; row++)
+	{
+		for (int col = 0; col < size; col++)
+		{
+			if (row == col)
+			{
+				L[row][col] = 1;
+			}
+			else
+				L[row][col] = 0;
+		}
+	}
+
+	int round = 0;
+	int row = 0;
+	int col = 0;
+
+	for (round = 0; round < size; round++)
+	{
+		for (row = round + 1; row < size; row++)
+		{
+			L[row][round] = A[row][round] / A[round][round];
+			for (col = 0; col < size; col++)
+			{
+				A[row][col] = A[row][col] - L[row][round] * A[round][col];
+			}
+		}
+	}
+
+	/* Displaying Solution L Matrix */
+	cout << "L Decomposition is as follows..." << endl;
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
+			cout << L[i][j] << " ";
+		}
+		cout << endl;
+	}
+
+	cout << endl;
+
+
+	/* Displaying Solution R Matrix */
+	cout << "R Decomposition is as follows..." << endl;
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
+			cout << A[i][j] << " ";
+		}
+		cout << endl;
+	}
+
+	/* Vorwärtssubstitution */
+	for (int i = 0; i < size; i++)
+	{
+		double rowOutsideValue1 = 1 / L[i][i];
+		double rowSum1 = 0;
+
+		for (int j = 0; j < i; j++)
+		{
+			rowSum1 += L[i][j] * y[j];
+		}
+
+		y[i] = rowOutsideValue1 * (b[i] - rowSum1);
+	}
+
+	/* Displaying Vorwärtssubstitution */
+	cout << endl;
+	for (int i = 0; i < size; i++)
+	{
+		cout << "y" << i + 1 << " = " << y[i] << endl;
+	}
+
+	/* Rückwärtssubstitution */
+	for (int i = size - 1; i >= 0; i--) {
+		double rowOutsideValue2 = 1 / A[i][i];
+		double rowSum2 = 0;
+
+		for (int j = i; j < size; j++) {
+			rowSum2 += A[i][j] * x[j];
+		}
+		x[i] = rowOutsideValue2 * (y[i] - rowSum2);
+	}
+
+	/* Displaying Rückwärtssubstitution */
+	cout << endl;
+	for (int i = 0; i < size; i++)
+	{
+		cout << "x" << i + 1 << " = " << x[i] << endl;
+	}
+}
 
 void jacobi_method()
 {
@@ -69,9 +187,172 @@ void jacobi_method()
 	}
 }
 
+void gaussSeidelMethod()
+{
+	const int size = 3;
+
+	double A[size][size] = {
+		{3, 1, 0},
+		{1, 3, 1},
+		{0, 1, 3}
+	};
+
+	double b[size] = {
+		1, 5, 7
+	};
+
+	double x[size] = { 0 };
+	double xOld[size] = { 0 };
+
+	double sum1 = 0;
+	double sum2 = 0;
+
+	double epsilon = 0.01;
+	double error = 1;
+
+	int round = 1;
+
+	while (error > epsilon)
+	{
+		error = 0;
+
+		cout << "Round " << round << endl;
+
+		for (int k = 0; k < size; k++)
+		{
+			for (int i = 0; i < k; i++)
+			{
+				sum1 += A[k][i] * x[i];
+			}
+
+			for (int i = k + 1; i < size; i++)
+			{
+				sum2 += A[k][i] * xOld[i];
+			}
+
+			x[k] = (1 / A[k][k] * (b[k] - sum1 - sum2));
+
+			sum1 = 0;
+			sum2 = 0;
+
+			cout << "x" << k + 1 << " = " << x[k] << ", ";
+
+		}
+
+		cout << endl;
+
+		for (int i = 0; i < size; i++)
+		{
+			error += abs(xOld[i] - x[i]);
+			xOld[i] = x[i];
+		}
+
+		round++;
+	}
+}
+
+void Choleskyzerlegung()
+{
+	const int size = 3;
+
+	double A[size][size] = {
+		{ 4, 2, 0 },
+		{ 2, 5, 2 },
+		{ 0, 2, 5 }
+	};
+
+	double leftSide[size][size] = { 0 };
+
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++) 
+		{
+			if (i < j)
+			{
+				leftSide[i][j] = 0;
+			}
+			else if (i == j) 
+			{
+				int sum = 0;
+
+				for (int k = 0; k < i; k++)
+				{
+					sum += pow(leftSide[i][k], 2);
+				}
+
+				leftSide[i][j] = sqrt(A[i][i] - sum);
+			}
+			else 
+			{
+				int sum = 0;
+
+				for (int k = 0; k < j; k++)
+				{
+					sum += leftSide[i][k] * leftSide[j][k];
+				}
+
+				leftSide[i][j] = (1 / leftSide[j][j]) * (A[i][j] - sum);
+			}
+		}
+	}
+
+	for (int i = 0; i < size; i++) 
+	{
+		for (int j = 0; j < size; j++)
+		{
+			cout << leftSide[i][j] << " ";
+		}
+
+		cout << endl;
+	}
+
+
+	int sum = 0;
+
+		for (int i = 0; i < size; i++)
+		{
+			for (int j = 0; j < size; j++)
+			{
+				for (int k = 0; k <= j; k++)
+				{
+					if (i >= j)
+					{
+						sum += leftSide[i][k] * leftSide[j][k];
+					}
+				}
+
+				A[i][j] = sum;
+
+				sum = 0;
+			}
+		}
+
+	cout << endl << endl;
+
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+		{
+			cout << A[i][j] << " ";
+		}
+
+		cout << endl;
+	}
+}
+
 int main()
 {
+	cout << "Jacobi" << endl << endl;
 	jacobi_method();
+	cout << endl;
+
+	cout << "gaussSeidel" << endl << endl;
+	gaussSeidelMethod();
+	cout << endl;
+
+	cout << "Choleskyzerlegung" << endl << endl;
+	Choleskyzerlegung();
+	cout << endl;
 
 	system("pause");
 	return 0;
