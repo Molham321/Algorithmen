@@ -1,0 +1,103 @@
+#include <iostream>
+#include <algorithm>    // std::max
+
+double functionXY(double x, double y)
+{
+	return pow(x, 2) + pow(y, 2);
+}
+
+double DifferentiationX(double x, double y, int j)
+{
+	double h = 0.0001;
+
+	if (j == 0)
+	{
+		return (functionXY(x + h, y) - functionXY(x, y)) / h;
+	}
+	else
+	{
+		return (functionXY(x, y + h) - functionXY(x, y)) / h;
+	}
+}
+
+void GradientMethod()
+{
+	double x[2] = { 0, 0 };
+	double xOld[2] = { 1,1 };
+	double epsilon = 0.01;
+	double s = 0.3;
+
+	bool gameOver = false;
+	for (int i = 0; !gameOver; i++)
+	{
+		std::cout << "round " << i + 1 << std::endl;
+
+		for (int j = 0; j < 2; j++)
+		{
+			x[j] = xOld[j] - s * DifferentiationX(xOld[0], xOld[1], j);	// Di als funktion schreiben ? 
+		}
+
+		if (abs(xOld[i] - x[i]) <= epsilon)
+		{
+			gameOver = true;
+		}
+
+		std::cout << "x[" << i + 1 << "] = (" << x[0] << ", " << x[1] << ")" << std::endl;
+
+		xOld[0] = x[0];
+		xOld[1] = x[1];
+
+	}
+}
+
+void DownhillSimplex()
+{
+
+	// 1) Bestimme Indizes s, a, b
+	double A[2] = {1,1};		// 4
+	double B[2] = {1,2};		// 5
+	double C[2] = {3,1};		// 10
+
+	double Xs = 10;
+	double Xa = 5;
+	double Xb = 4;
+
+	// 2) Berechne das Zentrum der n besten Punkte
+
+	double z = (1 / 3) * ( Xa + Xb);
+
+	// Berechne den am Zentrum reflektierten schlechtesten Punkt
+	int alfa = 1;
+	double r = z + alfa * (z - Xs);
+
+	// 3) Aufstellen des neuen Simplex
+	double e = 0;
+
+	if (functionXY(Xb, Xb) <= functionXY(r, r) && functionXY(r, r) <= functionXY(Xa,Xa))
+	{
+		Xs = r;
+	}
+	if (functionXY(r,r) <= functionXY(Xb, Xb))
+	{
+		e = z + 2 * (z - Xs);
+	}
+
+	if (functionXY(e, e) < functionXY(r, r))
+	{
+		Xs = e;
+	}
+	else
+	{
+		Xs = r;
+	}
+
+
+}
+
+int main()
+{
+	//GradientMethod();
+	DownhillSimplex();
+
+	return 0;
+}
