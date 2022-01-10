@@ -1,0 +1,58 @@
+/*
+	Schreiben Sie ein Programm zur Bestimmung eines Minimalen Spannbaums an Hand
+	des Beispiels der Vorlesung. Verwenden Sie den Algorithmus von Kruskal oder Prim.
+*/
+
+// Prim
+
+#include <iostream>
+
+void prim()
+{
+	int nodes[6][6] = {
+		{1000	, 3		, 1000	, 6		, 1000	, 3		},
+		{3		, 1000	, 2		, 5		, 5		, 1		},
+		{1000	, 2		, 1000	, 1		, 9		, 6		},
+		{6		, 5		, 1		, 1000	,2		, 4		},
+		{1000	, 5		, 9		, 2		, 1000	, 1		},
+		{3		, 1		, 6		, 4		, 1		, 1000	}
+	};
+
+	int spannbaum[6] = {0};
+
+	// Wähle einen beliebigen Knoten von G als Startgraph R
+	spannbaum[0] = 1;	// A
+	std::cout << "0" << std::endl;
+
+	// Solange R noch nicht alle Knoten von G enthält
+	for (int r = 0; r < 5; r++)
+	{
+		int besteRoute = 1000;
+		int tmpJ;
+		for (int i = 0; i < 6; i++)
+		{
+			if (spannbaum[i] == 1)
+			{
+				for (int j = 0; j < 6; j++)
+				{
+					if (nodes[i][j] < besteRoute && spannbaum[j] == 0)
+					{
+						tmpJ = j;
+						besteRoute = nodes[i][j];
+					}
+				}
+			}
+		}
+		std::cout << tmpJ << std::endl;
+		spannbaum[tmpJ] = 1;
+	}
+
+
+}
+
+int main()
+{
+	prim();
+
+	return 0;
+}
