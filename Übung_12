@@ -1,0 +1,112 @@
+#include <iostream>
+
+void BMH()
+{
+	// Initialize array of pointer
+	const char* text[] =
+	{
+		"E","i","n","e"," ",
+		"N","a","d","e","l"," ",
+		"i","m"," ",
+		"H","e","u","h","a","u","f","e","n"," ",
+		"f","i","n","d","e","n"
+	};
+
+	const char* p[] =
+	{
+		"f","i","n","d","e","n"
+	};
+
+	const int d[] =
+	{
+		5, 4, 3, 2, 1, 3
+	};
+	int i = 5;
+	while (i < 30)
+	{
+		if (p[5] == text[i])
+		{
+			std::cout << "im ersten if" << std::endl;
+			std::cout << i << std::endl;
+
+			std::cout << p[5] << "    " << text[i] << std::endl;
+
+			int counter = 1;
+			bool match = false;
+			for (int j = 4; j >= 0; j--)
+			{
+				std::cout << "jetzt geht es in den Vergleich der vorherigen Zeichen" << std::endl;
+
+				if (p[j] == text[i - counter])
+				{
+					std::cout << "im zweiten if" << std::endl;
+					match = true;
+					counter++;
+					std::cout << counter << ": " << p[j] << "    " << text[i - counter] << std::endl;
+
+				}
+				else
+				{
+					match = false;
+					break;
+				}
+			}
+			if (match)
+			{
+				std::cout << "fertig" << std::endl;
+				return;
+			}
+			else {
+				std::cout << "im zweiten else" << std::endl;
+				match = false;
+				bool isfound = false;
+				for (int c = 0; c < 6; c++)
+				{
+					if (text[i] == p[c])
+					{
+						isfound = true;
+						i += d[c];		// verschiebung
+						std::cout << "verschiebung um " << d[c] << std::endl;
+						std::cout << "verschiebung zum index " << i << std::endl;
+						break;
+					}
+				}
+				if (isfound == false)
+				{
+					i += 5;
+					std::cout << "verschiebung um " << "6" << std::endl;
+					std::cout << "verschiebung zum index " << i << std::endl;
+				}
+			}
+		}
+		else
+		{
+			bool isfound = false;
+			for (int c = 0; c < 6; c++)
+			{
+				if (text[i] == p[c])
+				{
+					isfound = true;
+					i += d[c];		// verschiebung
+					std::cout << "verschiebung um " << d[c] << std::endl;
+					std::cout << "verschiebung zum index " << i << std::endl;
+					break;																	//Ihr Hauptfehler lag am fehlenden break, hier wurde zu oft verschoben, und deswegen sind sie rausgelaufen
+				}
+			}
+			if (isfound == false)
+			{
+				i += 5;
+				std::cout << "verschiebung um " << "6" << std::endl;
+				std::cout << "verschiebung zum index " << i << std::endl;
+			}
+		}
+	}
+	std::cout << std::endl;
+}
+
+int main()
+{
+	BMH();
+
+	return 0;
+}
