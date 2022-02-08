@@ -1,52 +1,36 @@
 #include <iostream>
 
-void RegressionLine()
+void Regressionsgerade()
 {
-	const int MaxNumberOfElements = 11;
-	double year[MaxNumberOfElements] = { 1905, 1915, 1925, 1935, 1945, 1955, 1965, 1975, 1985, 1995, 2005 };
-	double TemperatureRise[MaxNumberOfElements] = { 7.7, 8.0 ,7.9 ,8.1 ,8.3 ,8.1 ,7.9 ,8.3 ,8.5,9.0 ,9.2 };
+	double Jahr[] = { 1905, 1915, 1925, 1935, 1945, 1955, 1965, 1975, 1985, 1995, 2005 };
+	double Temp[] = { 7.7, 8.0, 7.9, 8.1, 8.3, 8.1, 7.9, 8.3, 8.5, 9.0, 9.2 };
 
-	double X_Average = 0;
-	double Y_Average = 0;
-	double sumXY = 0;
-	double a = 0;
-	double b = 0;
+	double AnzahlOfElemente = (sizeof(Jahr) / sizeof(*Jahr));
+	double MittelwertJahr = 0;
+	double MittelwertTemp = 0;
+	double XiYi = 0;
+	double XiQuadrat = 0;
 
-	for (int i = 0; i < MaxNumberOfElements; i++)
+	for (int i = 0; i < AnzahlOfElemente; i++)
 	{
-		X_Average += year[i];
+		MittelwertJahr += Jahr[i];
+		MittelwertTemp += Temp[i];
+		XiYi += Jahr[i] * Temp[i];
+		XiQuadrat += pow(Jahr[i], 2);
 	}
 
-	X_Average /= MaxNumberOfElements;
-	std::cout << "X_Average = " << X_Average << std::endl;
+	MittelwertJahr /= AnzahlOfElemente;
+	MittelwertTemp /= AnzahlOfElemente;
 
-	for (int i = 0; i < MaxNumberOfElements; i++)
-	{
-		Y_Average += TemperatureRise[i];
-	}
-	Y_Average /= MaxNumberOfElements;
-	std::cout << "Y_Average = " << Y_Average << std::endl;
+	double b = (XiYi - (AnzahlOfElemente * MittelwertJahr * MittelwertTemp)) / (XiQuadrat - (AnzahlOfElemente * (pow(MittelwertJahr, 2))));
+	double a = MittelwertTemp - b * MittelwertJahr;
 
-	double sumX2 = 0;
-
-	for (int i = 0; i < MaxNumberOfElements; i++)
-	{
-		sumXY += (year[i] * TemperatureRise[i]);
-		sumX2 += pow(year[i], 2);
-	};
-	std::cout << "sumX2 = " << sumX2 << std::endl;
-	std::cout << "sumXY = " << sumXY << std::endl;
-
-	b = (sumXY - MaxNumberOfElements * X_Average * Y_Average) / (sumX2 - MaxNumberOfElements * pow(X_Average, 2));
-	a = Y_Average - b * X_Average;
-
-	std::cout << "y = a + bx = " << "= " <<  a << " + " << b << " * x" << std::endl;
-
+	std::cout << "y = " << a << " + " << b << " * x" << std::endl;
 }
 
 int main() {
 
-	RegressionLine();
+	Regressionsgerade();
 
 	return 0;
 }
