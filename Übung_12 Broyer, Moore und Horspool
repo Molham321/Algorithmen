@@ -104,6 +104,58 @@ void BMH()
 	std::cout << std::endl;
 }
 
+void textSearch()
+{
+    string input = "eine nadel im heuhaufen finden";
+    string pattern = "finden";
+
+    int n = input.size();
+    int m = pattern.size();
+    int shiftIndex[27];
+
+    for (int i = 0; i < 27; i++)
+    {
+        shiftIndex[i] = m;
+    }
+
+    for (int i = 0; i < m - 1; i++)
+    {
+        shiftIndex[pattern[i] - 97] = m - i - 1;
+    }
+    bool check = true;
+    int i = m - 1;
+    int counter;
+    int tmp;
+    while (i < n)
+    {
+        counter = 0;
+        check = true;
+        while (check)
+        {
+            if (input[i - counter] == pattern[m - 1 - counter])
+            {
+                counter++;
+                if (counter == m)
+                {
+                    cout << "Gefunden: " << i << endl;
+                    check = false;
+                }
+            }
+            else
+            {
+                tmp = input[i] - 97;
+                if (tmp < 0)
+                {
+                    tmp = 26;
+                }
+                i += shiftIndex[tmp];
+                check = false;
+            }
+
+        }
+    }
+}
+
 int main()
 {
 	BMH();
