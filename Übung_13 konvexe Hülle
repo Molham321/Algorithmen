@@ -1,0 +1,115 @@
+#include <iostream>
+
+struct SPoint {
+	float x;
+	float y;
+};
+
+float determinant(SPoint p0, SPoint p1, SPoint p2)
+{
+	//bool isRight;
+	float A = (p1.x - p0.x) * (p2.y - p0.y) - (p2.x - p0.x) * (p1.y - p0.y);
+	//if (A > 0)
+	//{
+	//	// Drehung gegen den Uhrzeigersinn	(links)
+	//	isRight = false;
+	//}
+	//else if (A < 0)
+	//{
+	//	// Drehung mit dem Uhrzeigersinn	(recht)
+	//	isRight = true;
+	//}
+	//else
+	//{
+	//	// Strecken zeigen in die gleiche Richtung
+	//	isRight = false;
+	//}
+
+	return A;
+}
+
+void jarvisMarch()
+{
+	SPoint SM[] =
+	{
+		{2,0}, {4,4}, {0,3}, {2,9}, {6,6}, {5,1}, {8,2}, {9,7}
+	};
+
+	SPoint SMinPoint = { 100, 100 };
+	int index = 0;
+	for (int i = 0; i < 8; i++)
+	{
+		if (SMinPoint.y > SM[i].y)
+		{
+			SMinPoint.x = SM[i].x;
+			SMinPoint.y = SM[i].y;
+
+			index = i;
+		}
+	}
+
+	SPoint SConvexHull[8] =
+	{
+		{0,0}, {0,0}, {0,0}, {0,0}, {0,0}
+	};
+
+	SPoint SL;
+	SPoint SP = SM[index];
+
+
+	SL.x = SP.x;
+	SL.y = SP.y;
+
+	SPoint SQ = SM[1];
+
+	int round = 0;
+	std::cout << "round: " << round << std::endl;
+	do
+	{
+		std::cout << "round: " << round + 1 << std::endl;
+
+		SConvexHull[round] = SP;
+
+		for (const auto& arr : SConvexHull) 
+		{
+			std::cout << "x: " << arr.x << std::endl;
+			std::cout << "y: " << arr.y << std::endl;
+			std::cout << std::endl;
+		}
+
+		for (int i = 0; i < 8; i++)
+		{
+			if (determinant(SP, SQ, SM[i]) > 0)
+			{
+				SQ.x = SM[i].x;
+				SQ.y = SM[i].y;
+
+				index = i;
+			}
+			else if (determinant(SP, SQ, SM[i]) == 0)
+			{
+				if (SQ.x < SM[i].x && SQ.y < SM[i].y)
+				{
+					SQ.x = SM[i].x;
+					SQ.y = SM[i].y;
+
+					index = i;
+				}
+			}
+		}
+
+		SP.x = SQ.x;
+		SP.y = SQ.y;
+
+		SQ = SM[(index + 1) % 8];
+
+		round++;
+
+	} while (round < 8);	// (SP.x != SL.x) && (SP.y != SL.y)
+}
+
+int main()
+{
+	jarvisMarch();
+	return 0;
+}
